@@ -444,6 +444,10 @@ class StructTest(unittest.TestCase):
         self.assertRaises((TypeError, struct.error), struct.pack_into, b'', sb,
                           None)
 
+        # Test overflow by large offset and buffer size
+        self.assertRaises((TypeError, struct.error), struct.pack_into, bytearray(10),
+                          sys.maxsize, 1)
+
     def test_pack_into_fn(self):
         test_string = b'Reykjavik rocks, eow!'
         writable_buf = array.array('b', b' '*100)

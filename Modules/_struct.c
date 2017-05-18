@@ -1929,7 +1929,16 @@ s_pack_into(PyObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames
 
     /* Check boundaries */
     if ((buffer.len - offset) < soself->s_size) {
-        PyErr_Format(StructError,
+
+        if (soself->s_size > PY_SSIZE_T_MAX - offset) {
+            PyErr_Format(StructError,
+                        "pack_into is overflowed by given offset at %zd "
+                        "in which buffer size is %zd",
+                        offset,
+                        buffer.len);
+        }
+        else {
+            PyErr_Format(StructError,
                      "pack_into requires a buffer of at least %zd bytes for "
                      "packing %zd bytes at offset %zd "
                      "(actual buffer size is %zd)",
@@ -1937,6 +1946,8 @@ s_pack_into(PyObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames
                      soself->s_size,
                      offset,
                      buffer.len);
+        }
+
         PyBuffer_Release(&buffer);
         return NULL;
     }

@@ -36,18 +36,17 @@ else
 HAS_GIT=no-repository
 fi
 
-GIT_VERSION="$(git --version | awk -F ' ' '{print $3}')"
+AS_VERSION_COMPARE(["$(git --version | awk -F ' ' '{print $3}')"],
+		   ["1.8.5"],
+                   [GIT_PREFIX="git"],
+		   [GIT_PREFIX="git -C \$(srcdir)"],
+		   [GIT_PREFIX="git -C \$(srcdir)"]
+     		  )
 
 if test $HAS_GIT = found; then
-    if [[ $GIT_VERSION < "1.8.5" ]]; then
-        GITVERSION="git rev-parse --short HEAD"
-        GITTAG="git describe --all --always --dirty"
-        GITBRANCH="git name-rev --name-only HEAD"
-    else
-        GITVERSION="git -C \$(srcdir) rev-parse --short HEAD"
-        GITTAG="git -C \$(srcdir) describe --all --always --dirty"
-        GITBRANCH="git -C \$(srcdir) name-rev --name-only HEAD"
-    fi
+    GITVERSION="$GIT_PREFIX rev-parse --short HEAD"
+    GITTAG="$GIT_PREFIX describe --all --always --dirty"
+    GITBRANCH="$GIT_PREFIX name-rev --name-only HEAD"
 else
     GITVERSION=""
     GITTAG=""
