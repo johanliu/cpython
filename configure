@@ -2810,8 +2810,7 @@ case $? in #(
   0) :
     GIT_PREFIX="git -C \$(srcdir)" ;; #(
   2) :
-    GIT_PREFIX="git -C \$(srcdir)"
-     		   ;; #(
+    GIT_PREFIX="git -C \$(srcdir)" ;; #(
   *) :
      ;;
 esac

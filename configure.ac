@@ -37,11 +37,10 @@ HAS_GIT=no-repository
 fi
 
 AS_VERSION_COMPARE(["$(git --version | awk -F ' ' '{print $3}')"],
-		   ["1.8.5"],
+                   ["1.8.5"],
                    [GIT_PREFIX="git"],
-		   [GIT_PREFIX="git -C \$(srcdir)"],
-		   [GIT_PREFIX="git -C \$(srcdir)"]
-     		  )
+                   [GIT_PREFIX="git -C \$(srcdir)"],
+                   [GIT_PREFIX="git -C \$(srcdir)"])
 
 if test $HAS_GIT = found; then
     GITVERSION="$GIT_PREFIX rev-parse --short HEAD"
